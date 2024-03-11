@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Búsqueda de Préstamos</title>
+    <!-- Enlace al archivo CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Buscar Préstamo</h2>
+        <form id="searchForm">
+            <div class="form-row">
+                <div class="col-md-3 mb-3">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre del estudiante">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" class="form-control" id="apellido"
+                        placeholder="Ingrese el apellido del estudiante">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="libro">Libro:</label>
+                    <input type="text" class="form-control" id="libro" placeholder="Ingrese el nombre del libro">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" class="form-control" id="fecha">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        <h2>Préstamos en el Almacén</h2>
+        <table class="table table-striped" id="prestamosTable">
+            <!-- Aquí va tu tabla de préstamos -->
+        </table>
+    </div>
+
+    <!-- Enlace al archivo JavaScript de Bootstrap (opcional, solo necesario si usas funcionalidades como dropdowns, modales, etc.) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Capturar el evento submit del formulario
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar que se recargue la página
+            // Obtener los valores de los campos de búsqueda
+            var nombre = document.getElementById('nombre').value.trim().toLowerCase();
+            var apellido = document.getElementById('apellido').value.trim().toLowerCase();
+            var libro = document.getElementById('libro').value.trim().toLowerCase();
+            var fecha = document.getElementById('fecha').value;
+            // Filtrar la tabla de préstamos
+            var prestamos = document.querySelectorAll('#prestamosTable tbody tr');
+            prestamos.forEach(function (prestamo) {
+                var mostrar = true;
+                // Comparar cada campo del préstamo con los valores de búsqueda
+                if (nombre && !prestamo.cells[0].textContent.trim().toLowerCase().includes(nombre)) {
+                    mostrar = false;
+                }
+                if (apellido && !prestamo.cells[1].textContent.trim().toLowerCase().includes(apellido)) {
+                    mostrar = false;
+                }
+                if (libro && !prestamo.cells[2].textContent.trim().toLowerCase().includes(libro)) {
+                    mostrar = false;
+                }
+                if (fecha && prestamo.cells[3].textContent.trim() !== fecha) {
+                    mostrar = false;
+                }
+                // Mostrar u ocultar el préstamo según el resultado del filtro
+                if (mostrar) {
+                    prestamo.style.display = '';
+                } else {
+                    prestamo.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

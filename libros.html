@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libros</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="font-awesome/css/all.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#"><i class="fas fa-book"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="estudiantes.html">Estudiantes<span
+                        class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="index.html">Préstamos</a>
+                <a class="nav-item nav-link active" href="#">Libros</a>
+                <a class="nav-item nav-link" href="lista_negra.html">Lista Negra</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <table class="table table-striped" id="librosTable">
+            <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#contenido"
+                aria-expanded="false" aria-controls="contenido">
+                Buscar <i class="fas fa-search"></i>
+            </button>
+            <!-- Contenido expandible -->
+            <div class="collapse" id="contenido">
+                <div class="card card-body">
+                    <form id="searchForm">
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="titulo">Título:</label>
+                                <input type="text" class="form-control" id="titulo"
+                                    placeholder="Ingrese el título del libro">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="año">Año:</label>
+                                <input type="text" class="form-control" id="año" placeholder="Ingrese el año del libro">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="bloque">Bloque:</label>
+                                <input type="text" class="form-control" id="bloque"
+                                    placeholder="Ingrese el bloque del libro">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="asignatura">Asignatura:</label>
+                                <input type="text" class="form-control" id="asignatura"
+                                    placeholder="Ingrese la asignatura del libro">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="codigo">Código:</label>
+                                <input type="text" class="form-control" id="codigo"
+                                    placeholder="Ingrese el código del libro">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="autores">Autores:</label>
+                                <input type="text" class="form-control" id="autores"
+                                    placeholder="Ingrese los autores del libro">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-md-center">
+                            <button type="submit" class="btn btn-success col-md-3 mr-2">Aceptar</button>
+                            <button type="reset" class="btn btn-secondary col-md-3">Resetear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Año</th>
+                    <th>Bloque</th>
+                    <th>Asignatura</th>
+                    <th>Código</th>
+                    <th>Cantidad total</th>
+                    <th>Cantidad prestada</th>
+                    <th>Autores</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Harry Potter y la Piedra Filosofal</td>
+                    <td>1997</td>
+                    <td>1</td>
+                    <td>Literatura</td>
+                    <td>9788478884459</td>
+                    <td>100</td>
+                    <td>50</td>
+                    <td>J.K. Rowling</td>
+                </tr>
+                <tr>
+                    <td>Cien años de soledad</td>
+                    <td>1967</td>
+                    <td>2</td>
+                    <td>Literatura</td>
+                    <td>978-84-376-0494-7</td>
+                    <td>100</td>
+                    <td>50</td>
+                    <td>Gabriel García Márquez</td>
+                </tr>
+                <!-- Puedes agregar más filas según necesites -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <script>
+        // Capturar el evento submit del formulario
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar que se recargue la página
+            // Obtener los valores de los campos de búsqueda
+            var titulo = document.getElementById('titulo').value.trim().toLowerCase();
+            var año = document.getElementById('año').value.trim().toLowerCase();
+            var bloque = document.getElementById('bloque').value.trim().toLowerCase();
+            var asignatura = document.getElementById('asignatura').value.trim().toLowerCase();
+            var codigo = document.getElementById('codigo').value.trim().toLowerCase();
+            var autores = document.getElementById('autores').value.trim().toLowerCase();
+            // Filtrar la tabla de libros
+            var libros = document.querySelectorAll('#librosTable tbody tr');
+            libros.forEach(function (libro) {
+                var mostrar = true;
+                // Comparar cada campo del libro con los valores de búsqueda
+                if (titulo && !libro.cells[0].textContent.trim().toLowerCase().includes(titulo)) {
+                    mostrar = false;
+                }
+                if (año && !libro.cells[1].textContent.trim().toLowerCase().includes(año)) {
+                    mostrar = false;
+                }
+                if (bloque && !libro.cells[2].textContent.trim().toLowerCase().includes(bloque)) {
+                    mostrar = false;
+                }
+                if (asignatura && !libro.cells[3].textContent.trim().toLowerCase().includes(asignatura)) {
+                    mostrar = false;
+                }
+                if (codigo && !libro.cells[4].textContent.trim().toLowerCase().includes(codigo)) {
+                    mostrar = false;
+                }
+                if (autores && !libro.cells[7].textContent.trim().toLowerCase().includes(autores)) {
+                    mostrar = false;
+                }
+                // Mostrar u ocultar el libro según el resultado del filtro
+                if (mostrar) {
+                    libro.style.display = '';
+                } else {
+                    libro.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

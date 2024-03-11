@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="font-awesome/css/all.css">
+  <title>Estudiantes</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#"><i class="fas fa-book"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="#">Estudiantes<span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="index.html">Préstamos</a>
+        <a class="nav-item nav-link" href="libros.html">Libros</a>
+        <a class="nav-item nav-link" href="lista_negra.html">Lista Negra</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container mt-5">
+    <table class="table table-striped" id="estudiantesTable">
+      <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#contenido"
+        aria-expanded="false" aria-controls="contenido">
+        Buscar <i class="fas fa-search"></i>
+      </button>
+      <div class="collapse" id="contenido">
+        <div class="card card-body">
+          <form id="searchForm">
+            <div class="form-row">
+              <div class="col-md-2 mb-3">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre del estudiante">
+              </div>
+              <div class="col-md-2 mb-3">
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" class="form-control" id="apellidos"
+                  placeholder="Ingrese los apellidos del estudiante">
+              </div>
+              <div class="col-md-2 mb-3">
+                <label for="sexo">Sexo:</label>
+                <select class="form-control" id="sexo">
+                  <option value="">Todos</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                </select>
+              </div>
+              <div class="col-md-2 mb-3">
+                <label for="ci">CI:</label>
+                <input type="text" class="form-control" id="ci" placeholder="Ingrese el CI del estudiante">
+              </div>
+              <div class="col-md-2 mb-3">
+                <label for="anio">Año:</label>
+                <input type="number" class="form-control" id="anio" placeholder="Ingrese el año">
+              </div>
+              <div class="col-md-2 mb-3">
+                <label for="deudor">Deudor:</label>
+                <select class="form-control" id="deudor">
+                  <option value="">Todos</option>
+                  <option value="true">Sí</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            </div>
+            <div class="d-flex justify-content-md-center">
+              <button type="submit" class="btn btn-success col-md-3 mr-2">Aceptar</button>
+              <button type="reset" class="btn btn-secondary col-md-3">Resetear</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Sexo</th>
+          <th>CI</th>
+          <th>Año</th>
+          <th>Deudor?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>José</td>
+          <td>García Pérez</td>
+          <td>Masculino</td>
+          <td>1234567</td>
+          <td>3</td>
+          <td>Sí</td>
+        </tr>
+        <tr>
+          <td>María</td>
+          <td>Rodríguez López</td>
+          <td>Femenino</td>
+          <td>7654321</td>
+          <td>5</td>
+          <td>No</td>
+        </tr>
+        <!-- Puedes agregar más filas según necesites -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+  <script>
+    // Capturar el evento submit del formulario
+    document.getElementById('searchForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Evitar que se recargue la página
+      // Obtener los valores de los campos de búsqueda
+      var nombre = document.getElementById('nombre').value.trim().toLowerCase();
+      var apellidos = document.getElementById('apellidos').value.trim().toLowerCase();
+      var sexo = document.getElementById('sexo').value;
+      var ci = document.getElementById('ci').value.trim().toLowerCase();
+      var anio = document.getElementById('anio').value.trim();
+      var deudor = document.getElementById('deudor').value;
+      // Filtrar la tabla de estudiantes
+      var estudiantes = document.querySelectorAll('#estudiantesTable tbody tr');
+      estudiantes.forEach(function (estudiante) {
+        var mostrar = true;
+        // Comparar cada campo del estudiante con los valores de búsqueda
+        if (nombre && !estudiante.cells[0].textContent.trim().toLowerCase().includes(nombre)) {
+          mostrar = false;
+        }
+        if (apellidos && !estudiante.cells[1].textContent.trim().toLowerCase().includes(apellidos)) {
+          mostrar = false;
+        }
+        if (sexo && sexo !== 'Todos' && estudiante.cells[2].textContent.trim().toLowerCase() !== sexo.toLowerCase()) {
+          mostrar = false;
+        }
+        if (ci && !estudiante.cells[3].textContent.trim().toLowerCase().includes(ci)) {
+          mostrar = false;
+        }
+        if (anio && estudiante.cells[4].textContent.trim() !== anio) {
+          mostrar = false;
+        }
+        if (deudor && deudor !== 'Todos') {
+          var esDeudor = estudiante.cells[5].textContent.trim() === 'Sí';
+          if ((deudor === 'true' && !esDeudor) || (deudor === 'false' && esDeudor)) {
+            mostrar = false;
+          }
+        }
+        // Mostrar u ocultar el estudiante según el resultado del filtro
+        if (mostrar) {
+          estudiante.style.display = '';
+        } else {
+          estudiante.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
